@@ -1,17 +1,12 @@
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 
-const TabsContaier = () => {
+const TabsContaier = ({ allData, active, handleActiveList }) => {
   return (
-    <Tabs
-      defaultActiveKey="profile"
-      id="uncontrolled-tab-example"
-      className="mb-3"
-    >
-      <Tab eventKey="home" title="Home">
-      </Tab>
-      <Tab eventKey="profile" title="Profile">
-      </Tab>
+    <Tabs activeKey={active} onSelect={handleActiveList} className="mb-3">
+      {allData.map((list) => (
+        <Tab key={list.id} eventKey={list.id} title={list.value}></Tab>
+      ))}
     </Tabs>
   );
 };
