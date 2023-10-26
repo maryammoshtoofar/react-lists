@@ -1,11 +1,15 @@
+import Wrapper from "./layout/wrapper";
+import Header from "./layout/header";
+import TabsContaier from "./components/tabs";
 
-
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      React Lists App
-    </div>
+    <Wrapper>
+      <Header>
+        <TabsContaier />
+      </Header>
+    </Wrapper>
   );
-}
+};
 
 export default App;
