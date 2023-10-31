@@ -3,16 +3,34 @@ import Header from "./layout/header";
 import TabsContaier from "./components/tabs";
 import Items from "./components/items";
 import Loader from "./components/loader";
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import { lists } from "./data";
+import Context from "./context/active-tab-context";
 
 const App = () => {
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState({ status: true });
+  const loadingReducer = (state, action) => {
+    switch (action.type) {
+      case "PENDING":
+        return { ...state, status: true };
+      case "TRUE":
+        return { ...state, status: true };
+      case "FALSE":
+        return { status: false, Errormessage: "" };
+      default:
+        return state;
+    }
+  };
+  const [loading, dispatch] = useReducer(loadingReducer, {
+    status: true,
+    Errormessage: "Loading",
+  });
   const [allData, setAllData] = useState(lists);
   const [active, setActive] = useState("1");
 
   setTimeout(() => {
-    setLoading(false);
+    dispatch({ type: "FALSE" });
+    // setLoading(false);
   }, 2000);
 
   const handleActiveList = (k) => setActive(k);
@@ -27,23 +45,29 @@ const App = () => {
     updatedList.splice(index, 1, selectedList);
     setAllData(updatedList);
   };
+
+
   return (
-    <Wrapper>
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <Header>
-            <TabsContaier
-              allData={allData}
-              active={active}
-              handleActiveList={handleActiveList}
+    <Context.Provider value={{active, setActive}}>
+      <Wrapper>
+        {loading.status ? (
+          <Loader />
+        ) : (
+          <>
+            <Header>
+              <TabsContaier
+                allData={allData}
+                handleActiveList={handleActiveList}
+              />
+            </Header>
+            <Items
+              selectedList={selectedList}
+              addToData={addItemsToData}
             />
-          </Header>
-          <Items active={active} selectedList={selectedList} addToData={addItemsToData} />
-        </>
-      )}
-    </Wrapper>
+          </>
+        )}
+      </Wrapper>
+    </Context.Provider>
   );
 };
 

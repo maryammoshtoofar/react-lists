@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import AddFormModal from "../addFormModal";
 import Item from "../item";
+import Context from "../../context/active-tab-context";
 
-const Items = ({ selectedList, addToData, active }) => {
+const Items = ({ selectedList, addToData }) => {
+  const {active} = useContext(Context)
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
